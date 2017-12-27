@@ -43,6 +43,8 @@ default_settings = settings = {
     "recent": 20,
     "paste": False
 }
+SIZE=32
+
 configpath = expanduser("~") + "/.config/emojione-picker"
 os.path.isdir(configpath) or os.mkdir(configpath)
 
@@ -131,7 +133,7 @@ def open_search_window(self, w):
         global sorted_recent, searchresults
         for i in sorted_recent:
             emoji_name = sorted_recent[i]["name"]
-            emoji_image = GdkPixbuf.Pixbuf.new_from_file_at_size(directory + "/assets/svg/" + sorted_recent[i]["unicode"] + ".svg", 24, 24)
+            emoji_image = GdkPixbuf.Pixbuf.new_from_file_at_size(directory + "/assets/svg/" + sorted_recent[i]["unicode"] + ".svg", SIZE, SIZE)
             emoji_code = sorted_recent[i]["unicode"]
             iconstore.append([emoji_image, emoji_code, emoji_name])
             searchresults = []
@@ -153,7 +155,7 @@ class SearchHandler:
             global sorted_recent
             for i in sorted_recent:
                 emoji_name = sorted_recent[i]["name"]
-                emoji_image = GdkPixbuf.Pixbuf.new_from_file_at_size(directory + "/assets/svg/" + sorted_recent[i]["unicode"] + ".svg", 24, 24)
+                emoji_image = GdkPixbuf.Pixbuf.new_from_file_at_size(directory + "/assets/svg/" + sorted_recent[i]["unicode"] + ".svg", SIZE, SIZE)
                 emoji_code = sorted_recent[i]["unicode"]
                 iconstore.append([emoji_image, emoji_code, emoji_name])
             searchresults = []
@@ -175,7 +177,7 @@ class SearchHandler:
                     return
                 searchresults.append(sorted_data[i])
                 emoji_name = sorted_data[i]["name"]
-                emoji_image = GdkPixbuf.Pixbuf.new_from_file_at_size(directory + "/assets/svg/" + sorted_data[i]["unicode"] + ".svg", 24, 24)
+                emoji_image = GdkPixbuf.Pixbuf.new_from_file_at_size(directory + "/assets/svg/" + sorted_data[i]["unicode"] + ".svg", SIZE, SIZE)
                 emoji_code = sorted_data[i]["unicode"]
                 iconstore.append([emoji_image, emoji_code, emoji_name])
     def onIconActivated(self, icon, index):
@@ -253,7 +255,7 @@ def refresh_recent_submenu():
     for key in sorted_recent:
         if i >= settings["recent"]:
             break
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(directory + "/assets/svg/" + sorted_recent[key]["unicode"] + ".svg", iconsizes[1], iconsizes[2])
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(directory + "/assets/svg/" + sorted_recent[key]["unicode"] + ".svg", 96, 96)
         img = Gtk.Image.new_from_pixbuf(pixbuf)
         recent_items[i].set_image(img)
         recent_items[i].set_label(sorted_recent[key]["name"].title())
@@ -369,8 +371,8 @@ if __name__ == "__main__":
           pass
 
         # Get proper icon sizes
-        iconsizes = Gtk.IconSize.lookup(Gtk.IconSize.MENU)
-
+        iconsizes = [None, SIZE, SIZE]
+        
         # Create categories items and submenus
         category_item = {}
         category_menu = {}
